@@ -49,7 +49,7 @@ static int __init firewall_init(void){
     nf_register_net_hook(&init_net, &firewall_hook_in);
     pr_info("FireWall IN module loaded\n");
 
-    firewall_hook_out.hook = netfilter_firewall_out;
+    firewall_hook_out.hook = firewall;
     firewall_hook_out.pf = PF_INET;
     firewall_hook_out.hooknum = NF_INET_LOCAL_OUT;
     firewall_hook_out.priority = NF_IP_PRI_FIRST;
