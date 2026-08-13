@@ -1,15 +1,10 @@
 #ifndef FW_RULE_H
 #define FW_RULE_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
 #include <linux/netlink.h>
 
+#define FW_DIR_IN  0
+#define FW_DIR_OUT 1
 
 struct fw_rule {
     __be32 src_ip;
@@ -18,6 +13,5 @@ struct fw_rule {
     __u16  port;
     __u8   direction;
 };
-
 
 #endif
