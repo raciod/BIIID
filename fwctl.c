@@ -1,4 +1,11 @@
 #include "fw_rule.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 #define NETLINK_USER 31
 #define MAX_PAYLOAD sizeof(struct fw_rule)

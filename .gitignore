@@ -12,3 +12,5 @@ modules.order
 *.o.ur-safe
 article_examples/
 article.md
+test/
+*.sh

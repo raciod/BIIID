@@ -18,6 +18,9 @@ remove:
 log:
 	sudo dmesg | tail -n 30
 
+test:
+	sudo bash test/run_all.sh
+
 reload: remove all install
 	@echo "Module reloaded"
 
