@@ -1,5 +1,5 @@
 #include "netfilter_firewall.h"
-#include "fw_rule.h"
+#include "../shared/fw_rule.h"
 
 static struct nf_hook_ops firewall_hook_in;
 static struct nf_hook_ops firewall_hook_out;

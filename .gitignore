@@ -14,3 +14,4 @@ article_examples/
 article.md
 test/
 *.sh
+fwctl
