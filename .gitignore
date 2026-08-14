@@ -12,6 +12,12 @@ modules.order
 *.o.ur-safe
 article_examples/
 article.md
-test/
-*.sh
-fwctl
+fwctl/fwctl
+kernel/*.o
+kernel/*.ko
+kernel/*.mod
+kernel/*.mod.c
+kernel/*.mod.o
+kernel/Module.symvers
+kernel/modules.order
+docs/
