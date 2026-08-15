@@ -21,3 +21,5 @@ kernel/*.mod.o
 kernel/Module.symvers
 kernel/modules.order
 docs/
+fwctl/test_parser
+fwctl/test_parser
