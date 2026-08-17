@@ -1,6 +1,6 @@
-# Directories
+# Directorie# Directories
 KERNEL_DIR := kernel
-CLI_DIR    := cli
+CLI_DIR    := fwctl
 SHARED_DIR := shared
 TESTS_DIR  := tests
 
@@ -10,6 +10,7 @@ CFLAGS := -Wall -Wextra -O2 -I$(SHARED_DIR)
 
 # Binaries
 CLI_BIN := $(CLI_DIR)/fwctl
+CLI_SRCS := $(CLI_DIR)/fwctl.c $(CLI_DIR)/parser.c
 
 .PHONY: all kernel cli clean install remove log test
 
@@ -23,8 +24,8 @@ kernel:
 # Build CLI tool
 cli: $(CLI_BIN)
 
-$(CLI_BIN): $(CLI_DIR)/fwctl.c
-	$(CC) $(CFLAGS) $< -o $@
+$(CLI_BIN): $(CLI_SRCS)
+	$(CC) $(CFLAGS) $(CLI_SRCS) -o $@
 
 # Kernel management helper rules
 install:
