@@ -8,6 +8,10 @@
 #define FW_ACTION_DROP   0
 #define FW_ACTION_ACCEPT 1
 
+#define DEFAULT_CONFIG_PATH "/home/raciod/Data/Projects/Fire-Wall/config/biiid.conf"
+
+#define NETLINK_USER 31
+
 struct fw_rule {
     __u8   action;
     __be32 src_ip;
@@ -16,5 +20,8 @@ struct fw_rule {
     __u16  port;
     __u8   direction;
 };
+
+#define MAX_PAYLOAD sizeof(struct fw_rule)
+// int send_rules(struct fw_rule_node *rules);
 
 #endif
