@@ -7,6 +7,7 @@ static struct nf_hook_ops firewall_hook_in;
 static struct nf_hook_ops firewall_hook_out;
 
 static struct list_head rule_list_head;
+static u32 user_pid = 0;
 
 // static struct fw_rule active_rule;
 static struct sock *nl_sock = NULL;
@@ -25,6 +26,7 @@ static void netlink_recv_msg(struct sk_buff *skb) {
 
   nlh = (struct nlmsghdr *)skb->data;
   rule = (struct fw_rule *)nlmsg_data(nlh);
+  user_pid = (u32)nlh->nlmsg_pid;
 
   printk(KERN_INFO "Netlink: received rule - scr=%pI4 dst=%pI4 proto=%u port=%u dir=%u\n", 
          &rule->src_ip, &rule->dst_ip, (unsigned int)rule->protocol, 
@@ -37,6 +39,33 @@ static void netlink_recv_msg(struct sk_buff *skb) {
 static struct netlink_kernel_cfg cfg = {
   .input = netlink_recv_msg,
 };
+
+static void send_drop_notification(const struct fw_rule *rule)
+{
+    struct sk_buff *nl_skb;
+    struct nlmsghdr *nlh;
+    int msg_size = sizeof(struct fw_rule);
+
+    if (user_pid == 0 || !nl_sock)
+        return;
+
+    nl_skb = nlmsg_new(msg_size, GFP_ATOMIC);
+    if (!nl_skb)
+        return;
+
+    nlh = nlmsg_put(nl_skb, 0, 0, NLMSG_DONE, msg_size, 0);
+    if (!nlh) {
+        nlmsg_free(nl_skb);
+        return;
+    }
+
+    memcpy(nlmsg_data(nlh), rule, msg_size);
+
+    if (nlmsg_unicast(nl_sock, nl_skb, user_pid) < 0) {
+        pr_warn("BIIID: Failed to send unicast drop notification\n");
+    }
+}
+
 
 /* Filter function based on PORT, PROTOCOL, IP SRC, IP DEST */
 static unsigned int firewall(void *priv,
@@ -89,6 +118,7 @@ static unsigned int firewall(void *priv,
         }
 
         // If a packet survived all field checks without skipping, it's a full match!
+        send_drop_notification(&pos->rule);
         pr_info("BIIID: Dropped packet matching rule\n");
         return NF_DROP;
     }
