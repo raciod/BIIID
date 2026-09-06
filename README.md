@@ -101,7 +101,3 @@ DROP         PORT          80                  OUT
 DROP         PROTO         TCP                 IN
 
 ```
-
-```
-
-```
